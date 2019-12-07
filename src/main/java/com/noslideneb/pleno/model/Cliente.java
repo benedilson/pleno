@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,12 +19,13 @@ import javax.validation.constraints.Size;
 public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    private String id;
 
     @NonNull
     @Size(min = 3, max = 100, message = "O nome do cliente eeve ter entre 3 e 100 caracteres")
-    @Pattern(regexp = "[A-Za-z0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]")
+    //@Pattern(regexp = "[A-Za-z0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]")
     private String nome;
 
     @NonNull
@@ -47,18 +49,15 @@ public class Cliente {
     private String complemento;
 
     @NonNull
-    private int ddd;
-
-    @NonNull
-    private int numero;
+    private String numero;
 
     private String email;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -126,19 +125,11 @@ public class Cliente {
         this.complemento = complemento;
     }
 
-    public int getDdd() {
-        return ddd;
-    }
-
-    public void setDdd(int ddd) {
-        this.ddd = ddd;
-    }
-
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 

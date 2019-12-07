@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api", produces = {"application/json"})
 public class ClienteController {
 
     private final Logger log = LoggerFactory.getLogger(ClienteController.class);
@@ -31,28 +31,28 @@ public class ClienteController {
     }
 
     @GetMapping("/cliente/{id}")
-    ResponseEntity<?> obterCliente(@PathVariable Long id) {
+    ResponseEntity<?> obterCliente(@PathVariable String id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
         return cliente.map(response -> ResponseEntity.ok().body(response))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/cliente")
-    ResponseEntity<Cliente> salvaCliente(@Valid @RequestBody Cliente cliente) throws URISyntaxException {
+    ResponseEntity<Cliente> salvaCliente(@RequestBody Cliente cliente) throws URISyntaxException {
         log.info("Requisição para criar cliente: {}", cliente);
         Cliente resultado = clienteRepository.save(cliente);
         return ResponseEntity.created(new URI("/api/cliente/" + resultado.getId())).body(resultado);
     }
 
     @PutMapping("/cliente/{id}")
-    ResponseEntity<Cliente> atualizarCliente(@Valid @RequestBody Cliente cliente) {
+    ResponseEntity<Cliente> atualizarCliente(@RequestBody Cliente cliente) {
         log.info("Requisição para atualizar cliente: {}", cliente);
         Cliente resultado = clienteRepository.save(cliente);
         return ResponseEntity.ok().body(resultado);
     }
 
     @DeleteMapping("/cliente/{id}")
-    public ResponseEntity<?> deletarCliente(@PathVariable Long id) {
+    public ResponseEntity<?> deletarCliente(@PathVariable String id) {
         log.info("Requisição para Deletar cliente: {}", id);
         clienteRepository.deleteById(id);
         return ResponseEntity.ok().build();
