@@ -5,17 +5,17 @@ import com.noslideneb.pleno.repository.ClienteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/api", produces = {"application/json"})
+@RequestMapping(value = "/api", produces = {"application/json"}, method = {RequestMethod.PUT})
 public class ClienteController {
 
     private final Logger log = LoggerFactory.getLogger(ClienteController.class);
@@ -38,14 +38,14 @@ public class ClienteController {
     }
 
     @PostMapping("/cliente")
-    ResponseEntity<Cliente> salvaCliente(@RequestBody Cliente cliente) throws URISyntaxException {
+    public ResponseEntity<Cliente> salvaCliente(@RequestBody Cliente cliente) throws URISyntaxException {
         log.info("Requisição para criar cliente: {}", cliente);
         Cliente resultado = clienteRepository.save(cliente);
         return ResponseEntity.created(new URI("/api/cliente/" + resultado.getId())).body(resultado);
     }
 
-    @PutMapping("/cliente/{id}")
-    ResponseEntity<Cliente> atualizarCliente(@RequestBody Cliente cliente) {
+    @PutMapping(path = "/cliente/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Cliente> atualizarCliente(@PathVariable String id, @RequestBody Cliente cliente) throws URISyntaxException {
         log.info("Requisição para atualizar cliente: {}", cliente);
         Cliente resultado = clienteRepository.save(cliente);
         return ResponseEntity.ok().body(resultado);

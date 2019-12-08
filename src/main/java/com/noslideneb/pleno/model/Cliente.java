@@ -1,6 +1,5 @@
 package com.noslideneb.pleno.model;
 
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -8,15 +7,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-public class Cliente {
+public class Cliente implements Serializable {
 
     @Id
     @GeneratedValue(generator = "system-uuid")
@@ -25,7 +23,6 @@ public class Cliente {
 
     @NonNull
     @Size(min = 3, max = 100, message = "O nome do cliente eeve ter entre 3 e 100 caracteres")
-    //@Pattern(regexp = "[A-Za-z0-9áàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]")
     private String nome;
 
     @NonNull
