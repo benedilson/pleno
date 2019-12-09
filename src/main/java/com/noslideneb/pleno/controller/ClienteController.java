@@ -40,14 +40,14 @@ public class ClienteController {
     @PostMapping("/cliente")
     public ResponseEntity<Cliente> salvaCliente(@RequestBody Cliente cliente) throws URISyntaxException {
         log.info("Requisição para criar cliente: {}", cliente);
-        Cliente resultado = clienteRepository.save(cliente);
+        Cliente resultado = clienteRepository.save(removeFormatacao(cliente));
         return ResponseEntity.created(new URI("/api/cliente/" + resultado.getId())).body(resultado);
     }
 
     @PutMapping(path = "/cliente/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Cliente> atualizarCliente(@PathVariable String id, @RequestBody Cliente cliente) throws URISyntaxException {
         log.info("Requisição para atualizar cliente: {}", cliente);
-        Cliente resultado = clienteRepository.save(cliente);
+        Cliente resultado = clienteRepository.save(removeFormatacao(cliente));
         return ResponseEntity.ok().body(resultado);
     }
 
@@ -56,6 +56,18 @@ public class ClienteController {
         log.info("Requisição para Deletar cliente: {}", id);
         clienteRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    private Cliente removeFormatacao(Cliente cliente) {
+        cliente.setCpf(cliente.getCpf().replace(".", ""));
+        cliente.setCpf(cliente.getCpf().replace("-", ""));
+        cliente.setCep(cliente.getCep().replace("-", ""));
+        cliente.setNumero(cliente.getNumero().replace("(", ""));
+        cliente.setNumero(cliente.getNumero().replace(")", ""));
+        cliente.setNumero(cliente.getNumero().replace("-", ""));
+        cliente.setNumero(cliente.getNumero().replace(" ", ""));
+
+        return cliente;
     }
 
 }

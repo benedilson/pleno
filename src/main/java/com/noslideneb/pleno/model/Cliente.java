@@ -8,7 +8,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -22,7 +21,6 @@ public class Cliente implements Serializable {
     private String id;
 
     @NonNull
-    @Size(min = 3, max = 100, message = "O nome do cliente eeve ter entre 3 e 100 caracteres")
     private String nome;
 
     @NonNull
@@ -48,6 +46,7 @@ public class Cliente implements Serializable {
     @NonNull
     private String numero;
 
+    @NonNull
     private String email;
 
     public String getId() {
@@ -126,8 +125,8 @@ public class Cliente implements Serializable {
         return numero;
     }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
+    public void setNumero(String contatos) {
+        this.numero = contatos;
     }
 
     public String getEmail() {
